@@ -4,7 +4,7 @@ axios.defaults.baseURL = 'https://api.themoviedb.org/3/';
 const API_KEY = 'bb60805928e986df13f7a98c4acc6577';
 
 export const fetchTrendingMovies = async () => {
-    const response = await axios.get(`trending/get-trending/movie/day?api_key=${API_KEY}`);
+    const response = await axios.get(`trending/movie/day?api_key=${API_KEY}`);
 
     return response.data.results;
 }
