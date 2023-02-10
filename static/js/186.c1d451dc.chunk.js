@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkreact_homework_template=self.webpackChunkreact_homework_template||[]).push([[186],{186:function(e,r,t){t.r(r),t.d(r,{Reviews:function(){return c}});var n=t(184),c=function(){return(0,n.jsx)("div",{children:(0,n.jsx)("h1",{children:"Rewiews"})})}}}]);
-//# sourceMappingURL=186.c1d451dc.chunk.js.map
