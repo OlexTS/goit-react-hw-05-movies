@@ -3,36 +3,42 @@ import { useParams } from 'react-router-dom';
 import { fetchMovieCredits } from 'services/api';
 import { BASE_IMG_URL } from 'services/constants';
 
-export const Cast = () => {
+ const Cast = () => {
   const [cast, setCast] = useState([]);
   const { movieId } = useParams();
   const defaultImg =
     'http://hi-news.pp.ua/uploads/posts/2016-11/scho-oznachaye-smayl-mavpochka-z-zakritimi-ochima-v-yakih-situacyah-yogo-vikoristovuvati_192.jpeg';
 
-  useEffect(() => {
+   useEffect(() => {
+    const controller = new AbortController();
     (async () => {
       try {
-        const data = await fetchMovieCredits(movieId);
-        console.log(data);
+        const data = await fetchMovieCredits(movieId, {
+          signal: controller.signal,
+        });
         setCast(data);
       } catch (error) {
         console.log(error);
       }
-    })();
+     })();
+      return () => 
+      controller.abort();
   }, [movieId]);
 
   if (cast.length === 0) {
     return (
       <div>
-        <h1>This movie does't have cast</h1>
+        <p>This movie doesn't have cast</p>
       </div>
     );
   }
 
   return (
     <ul>
+      <h1>CAST</h1>
       {cast.map(actor => (
         <li key={actor.cast_id}>
+          
           <img
             src={
               actor.profile_path
@@ -50,3 +56,4 @@ export const Cast = () => {
   );
 };
 
+export default Cast;

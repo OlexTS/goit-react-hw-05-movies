@@ -1,42 +1,71 @@
-import { useState, useEffect } from 'react';
-import { useParams, NavLink, Outlet } from 'react-router-dom';
+import { useState, useEffect, Suspense } from 'react';
+import {
+  useParams,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { fetchMovieDetails } from 'services/api';
-import { BASE_IMG_URL } from 'services/constants';
+import { MovieInfo } from 'components/MovieInfo/MovieInfo';
+import { GoBackButton } from 'components/GoBackButton/GoBackButton';
+import { Loader } from 'components/Loader/Loader';
 
 const MovieDetails = () => {
   const [movieData, setMovieData] = useState(null);
   const { movieId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const backBtn = location.state?.from ?? '/movies';
 
   useEffect(() => {
     (async () => {
       try {
         const data = await fetchMovieDetails(movieId);
+        console.log(data);
         setMovieData(data);
       } catch (err) {
         console.log(err);
       }
     })();
   }, [movieId]);
-    
+
+  const handleGoBack = () => {
+    navigate(backBtn);
+  };
+
   if (!movieData) {
     return (
       <div>
-        <h1>Loading...</h1>
+        <Loader />
       </div>
     );
   }
   return (
     <div>
-      <h1>MovieDetails</h1>
-      <button type="button">GO BACK</button>
-      <img
-        src={BASE_IMG_URL + movieData.poster_path}
-        alt={movieData.title}
-        width='300'
+      <h1>Movie Details</h1>
+      <GoBackButton onClick={handleGoBack} />
+      <MovieInfo
+        url={movieData.poster_path}
+        tag={movieData.tagline}
+        title={movieData.title}
+        genres={movieData.genres}
+        view={movieData.overview}
+        budget={movieData.budget}
       />
-      <NavLink to="cast">CAST</NavLink>
-      <NavLink to="reviews">REVIEWS</NavLink>
-      <Outlet />
+      <nav>
+        <NavLink to="cast" state={{ from: location.state.from }}>
+          CAST
+        </NavLink>
+        <NavLink to="reviews" state={{ from: location.state.from }}>
+          REVIEWS
+        </NavLink>
+      </nav>
+      <Suspense>
+        <div>
+          <Outlet />
+        </div>
+      </Suspense>
     </div>
   );
 };
