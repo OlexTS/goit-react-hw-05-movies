@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import React, { lazy } from 'react';
+import { ToastContainer } from 'react-toastify';
 import { SharedLayout } from './SharedLayout/SharedLayout';
 
 const Home = lazy(() => import('../pages/Home'));
@@ -11,6 +12,7 @@ const Reviews = lazy(() => import('./Reviews/Reviews'));
 const App = () => {
   return (
     <div>
+      <ToastContainer autoClose={3000} />
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<Home />} />

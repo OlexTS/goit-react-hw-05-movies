@@ -1,15 +1,14 @@
-import { useState, useEffect, Suspense } from 'react';
-import {
-  useParams,
-  NavLink,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import styled from '@emotion/styled';
 import { fetchMovieDetails } from 'services/api';
 import { MovieInfo } from 'components/MovieInfo/MovieInfo';
 import { GoBackButton } from 'components/GoBackButton/GoBackButton';
 import { Loader } from 'components/Loader/Loader';
+
+const Spinner = styled.h1`
+  text-align: center;
+`;
 
 const MovieDetails = () => {
   const [movieData, setMovieData] = useState(null);
@@ -22,7 +21,6 @@ const MovieDetails = () => {
     (async () => {
       try {
         const data = await fetchMovieDetails(movieId);
-        console.log(data);
         setMovieData(data);
       } catch (err) {
         console.log(err);
@@ -37,13 +35,14 @@ const MovieDetails = () => {
   if (!movieData) {
     return (
       <div>
-        <Loader />
+        <Spinner>
+          <Loader />
+        </Spinner>
       </div>
     );
   }
   return (
     <div>
-      <h1>Movie Details</h1>
       <GoBackButton onClick={handleGoBack} />
       <MovieInfo
         url={movieData.poster_path}
@@ -53,19 +52,6 @@ const MovieDetails = () => {
         view={movieData.overview}
         budget={movieData.budget}
       />
-      <nav>
-        <NavLink to="cast" state={{ from: location.state.from }}>
-          CAST
-        </NavLink>
-        <NavLink to="reviews" state={{ from: location.state.from }}>
-          REVIEWS
-        </NavLink>
-      </nav>
-      <Suspense>
-        <div>
-          <Outlet />
-        </div>
-      </Suspense>
     </div>
   );
 };

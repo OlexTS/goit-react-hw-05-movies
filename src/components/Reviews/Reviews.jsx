@@ -1,48 +1,47 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMovieReviews } from 'services/api';
+import { Title, List, Item, Error, Text } from './Reviews.styled';
 
 const Reviews = () => {
   const [reviewsMovie, setReviewsMovie] = useState([]);
   const { movieId } = useParams();
 
   useEffect(() => {
-    const controller = new AbortController();
     (async () => {
       try {
-        const data = await fetchMovieReviews(movieId, {
-          signal: controller.signal,
-        });
+        const data = await fetchMovieReviews(movieId, {});
         setReviewsMovie(data);
       } catch (error) {
         console.log(error);
       }
     })();
-    return () => 
-      controller.abort();
-    
   }, [movieId]);
 
   if (reviewsMovie.length === 0) {
     return (
       <div>
-        <p>This movie doesn't have reviews</p>
+        <Error>This movie doesn't have reviews</Error>
       </div>
     );
   }
 
   return (
-    <ul>
-      <h1>Rewiews</h1>
-      {reviewsMovie.map(review => (
-        <li key={review.id}>
-          <h2>
-            Author: {review.author}
-            <p>Description: {review.content}</p>
-          </h2>
-        </li>
-      ))}
-    </ul>
+    <>
+      <Title>REVIEWS</Title>
+      <List>
+        {reviewsMovie.map(review => (
+          <Item key={review.id}>
+            <h2>
+              Author: {review.author}
+              <p>
+                Description: <Text>{review.content}</Text>
+              </p>
+            </h2>
+          </Item>
+        ))}
+      </List>
+    </>
   );
 };
 

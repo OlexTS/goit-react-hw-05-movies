@@ -8,9 +8,11 @@ export const SharedLayout = () => {
     <div>
       <HeaderNav>
         <NavLink to="/" end>
-           <Home>Home</Home>
+          <Home>Home</Home>
         </NavLink>
-        <NavLink to="/movies"><Movies>Movies</Movies></NavLink>
+        <NavLink to="/movies">
+          <Movies>Movies</Movies>
+        </NavLink>
       </HeaderNav>
       <Suspense>
         <div>
