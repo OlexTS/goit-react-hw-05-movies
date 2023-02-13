@@ -8,6 +8,7 @@ import { SearchMovies } from 'components/SearchMovies/SearchMovies';
 import { MoviesList } from 'components/MoviesList/MoviesList';
 import { Loader } from 'components/Loader/Loader';
 import { LoadMore } from 'components/LoadMore/LoadMore';
+import { ScrollButton } from 'components/ScrollButton/ScrollButton';
 
 const Spinner = styled.h1`
   text-align: center;
@@ -70,7 +71,8 @@ const Movies = () => {
           movies.length !== 0 &&
           movies.length < totalImages && (
             <Load>
-              <LoadMore onLoadMore={loadNextPage} />
+                <LoadMore onLoadMore={loadNextPage} />
+                <ScrollButton/>
             </Load>
           )
         )}

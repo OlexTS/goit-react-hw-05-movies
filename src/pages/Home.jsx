@@ -4,6 +4,7 @@ import { fetchTrendingMovies } from 'services/api';
 import { MoviesList } from 'components/MoviesList/MoviesList';
 import { Loader } from 'components/Loader/Loader';
 import { LoadMore } from 'components/LoadMore/LoadMore';
+import { ScrollButton } from 'components/ScrollButton/ScrollButton';
 
 const Title = styled.h1`
   font-size: 36px;
@@ -59,7 +60,8 @@ const Home = () => {
           movies.length !== 0 &&
           movies.length < totalImages && (
             <Load>
-              <LoadMore onLoadMore={loadNextPage} />
+                <LoadMore onLoadMore={loadNextPage} />
+                <ScrollButton/>
             </Load>
           )
         )}
